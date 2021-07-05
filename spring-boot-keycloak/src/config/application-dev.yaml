@@ -1,0 +1,34 @@
+### server port
+server:
+  port: 8082
+
+
+#keycloak:
+#  realm: MIG-DEV
+#  auth-server-url: http://localhost:8080/auth/
+#  ssl-required: external
+#  resource: MIG-DEV-USER
+#  public-client: true
+#  verify-token-audience: true
+#  use-resource-role-mappings: true
+#  confidential-port: 0
+
+#
+keycloak:
+  realm: MIG-DEV
+  auth-server-url: http://localhost:8080/auth/
+  ssl-required: external
+  resource: MIG-DEV-APP
+  credentials:
+    secret: 2aeac652-19e8-4a70-85d8-f803554e6f2d
+
+
+#keycloak:
+#  realm: MIG-INT
+#  auth-server-url: https://keycloak-test.ista.com/auth/
+#  ssl-required: external
+#  resource: MIG-INT
+#  verify-token-audience: true
+#  credentials:
+#    secret: 6fec3f34-473a-483b-be81-2a21f36c5e9b
+#  confidential-port: 0

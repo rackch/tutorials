@@ -1,5 +1,6 @@
 package com.baeldung.keycloak;
 
+import org.keycloak.adapters.KeycloakConfigResolver;
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
@@ -15,12 +16,14 @@ import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
-
 @Configuration
 @EnableWebSecurity
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
-class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
-    // Submits the KeycloakAuthenticationProvider to the AuthenticationManager
+class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
+{
+    /**
+     * Registers the KeycloakAuthenticationProvider with the authentication manager.
+     */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
@@ -29,22 +32,26 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public KeycloakSpringBootConfigResolver KeycloakConfigResolver() {
+    public KeycloakConfigResolver KeycloakConfigResolver() {
         return new KeycloakSpringBootConfigResolver();
     }
 
-    // Specifies the session authentication strategy
+    /**
+     * Defines the session authentication strategy.
+     */
     @Bean
     @Override
     protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
         return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
     }
 
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         http.authorizeRequests()
-            .antMatchers("/customers*")
+            .antMatchers("/customers*") //.authenticated()
             .hasRole("user")
             .anyRequest()
             .permitAll();
